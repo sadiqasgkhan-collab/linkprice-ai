@@ -33,6 +33,7 @@ function calculatePrice() {
 
   let basePrice = 20;
 
+
   // Domain Rating Factor
   if (dr >= 70) {
     basePrice += 80;
@@ -135,7 +136,137 @@ function calculatePrice() {
 
 
   // --------------------------------
-  // 8. UPDATE RESULTS
+  // 8. WEBSITE QUALITY SCORE
+  // --------------------------------
+
+  let qualityScore = 0;
+
+  // DR contributes up to 50 points
+  qualityScore += Math.min(dr * 0.5, 50);
+
+  // Traffic contributes up to 40 points
+  if (traffic >= 1000000) {
+    qualityScore += 40;
+  } else if (traffic >= 500000) {
+    qualityScore += 35;
+  } else if (traffic >= 100000) {
+    qualityScore += 30;
+  } else if (traffic >= 50000) {
+    qualityScore += 25;
+  } else if (traffic >= 10000) {
+    qualityScore += 20;
+  } else if (traffic >= 5000) {
+    qualityScore += 15;
+  } else if (traffic >= 1000) {
+    qualityScore += 10;
+  } else if (traffic > 0) {
+    qualityScore += 5;
+  }
+
+  // Niche relevance contributes up to 10 points
+  const nicheScore = {
+    general: 5,
+    technology: 8,
+    saas: 10,
+    business: 8,
+    finance: 10,
+    health: 9,
+    home: 7,
+    roofing: 7,
+    fashion: 7
+  };
+
+  qualityScore += nicheScore[niche] || 5;
+
+  // Maximum score = 100
+  qualityScore = Math.min(Math.round(qualityScore), 100);
+
+
+  // --------------------------------
+  // 9. QUALITY LEVEL
+  // --------------------------------
+
+  let qualityLevel = "";
+
+  if (qualityScore >= 80) {
+    qualityLevel = "Excellent";
+  } else if (qualityScore >= 60) {
+    qualityLevel = "Good";
+  } else if (qualityScore >= 40) {
+    qualityLevel = "Average";
+  } else {
+    qualityLevel = "Low";
+  }
+
+
+  // --------------------------------
+  // 10. PRICE EXPLANATION
+  // --------------------------------
+
+  let explanation = "";
+
+  if (dr >= 50 && traffic >= 50000) {
+
+    explanation =
+      "This website has strong domain authority and significant organic traffic. " +
+      "It can reasonably command a premium guest post or backlink price.";
+
+  } else if (dr >= 30 && traffic >= 10000) {
+
+    explanation =
+      "This website has a solid SEO profile with good authority and organic traffic. " +
+      "The estimated market price is suitable for a quality guest post.";
+
+  } else if (dr >= 20 && traffic >= 5000) {
+
+    explanation =
+      "This website has moderate authority and traffic. " +
+      "The market price may vary depending on content quality, niche relevance and link placement.";
+
+  } else {
+
+    explanation =
+      "This website has relatively low authority or organic traffic. " +
+      "A lower price may be more competitive unless the website has strong niche relevance.";
+
+  }
+
+
+  // --------------------------------
+  // 11. RECOMMENDATION
+  // --------------------------------
+
+  let recommendation = "";
+
+  if (qualityScore >= 80) {
+
+    recommendation =
+      "Recommended Price: $" + premiumPrice +
+      ". This website appears suitable for premium link-building opportunities.";
+
+  } else if (qualityScore >= 60) {
+
+    recommendation =
+      "Recommended Price: $" + marketPrice +
+      ". This is a reasonable market price based on the website's current SEO profile.";
+
+  } else if (qualityScore >= 40) {
+
+    recommendation =
+      "Recommended Price: $" + marketPrice +
+      ". Consider negotiating based on niche relevance and link quality.";
+
+  } else {
+
+    recommendation =
+      "Recommended Price: $" + budgetPrice +
+      ". Consider improving authority and organic traffic before charging premium rates.";
+
+  }
+
+
+  // --------------------------------
+  // 12. UPDATE PRICE RESULTS
   // --------------------------------
 
   document.getElementById("budgetPrice").textContent =
@@ -149,48 +280,50 @@ function calculatePrice() {
 
 
   // --------------------------------
-  // 9. RECOMMENDATION
+  // 13. UPDATE RECOMMENDATION
   // --------------------------------
-
-  let recommendation = "";
-
-  if (dr >= 50 && traffic >= 50000) {
-
-    recommendation =
-      "This is a high-authority website with strong organic traffic. " +
-      "A premium price around $" + premiumPrice +
-      " may be justified.";
-
-  } else if (dr >= 30 && traffic >= 10000) {
-
-    recommendation =
-      "This website has a solid SEO profile. " +
-      "A market price around $" + marketPrice +
-      " is a reasonable estimate.";
-
-  } else if (dr >= 20 && traffic >= 5000) {
-
-    recommendation =
-      "This website has moderate authority and traffic. " +
-      "A budget-to-market price around $" + marketPrice +
-      " may be appropriate.";
-
-  } else {
-
-    recommendation =
-      "This website has relatively low authority or traffic. " +
-      "Consider starting near the budget price of $" + budgetPrice +
-      " and adjusting based on niche relevance and link quality.";
-
-  }
-
 
   document.getElementById("recommendationText").textContent =
     recommendation;
 
 
   // --------------------------------
-  // 10. SHOW RESULT
+  // 14. ADD QUALITY SCORE
+  // --------------------------------
+
+  let scoreElement = document.getElementById("qualityScore");
+
+  if (!scoreElement) {
+
+    scoreElement = document.createElement("div");
+
+    scoreElement.id = "qualityScore";
+
+    scoreElement.style.marginTop = "25px";
+    scoreElement.style.padding = "20px";
+    scoreElement.style.borderRadius = "12px";
+    scoreElement.style.background = "#f5f7ff";
+    scoreElement.style.textAlign = "center";
+
+    document.getElementById("result").appendChild(scoreElement);
+
+  }
+
+  scoreElement.innerHTML =
+    "<h3>Website Quality Score</h3>" +
+    "<strong style='font-size:32px;'>" +
+    qualityScore +
+    "/100</strong>" +
+    "<p><b>" +
+    qualityLevel +
+    "</b></p>" +
+    "<p>" +
+    explanation +
+    "</p>";
+
+
+  // --------------------------------
+  // 15. SHOW RESULT
   // --------------------------------
 
   document.getElementById("result").classList.remove("hidden");
@@ -216,12 +349,21 @@ function copyResult() {
   const recommendation =
     document.getElementById("recommendationText").textContent;
 
+  const scoreElement =
+    document.getElementById("qualityScore");
+
+  const qualityScore =
+    scoreElement
+      ? scoreElement.innerText
+      : "Quality Score not available";
+
 
   const resultText =
     "LinkPrice AI - Guest Post Price Estimate\n\n" +
     "Budget Price: " + budget + "\n" +
     "Market Price: " + market + "\n" +
     "Premium Price: " + premium + "\n\n" +
+    qualityScore + "\n\n" +
     "Recommendation: " + recommendation;
 
 
