@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Guest Post Price Calculator | LinkPrice AI</title>
+
+  <meta
+    name="description"
+    content="Calculate an estimated guest post and backlink price based on domain rating, organic traffic, niche, country and link type."
+  >
+
+  <meta
+    name="keywords"
+    content="Guest Post Price Calculator, Backlink Cost Calculator, Guest Post Pricing, Link Building Cost"
+  >
+
+  <meta name="author" content="LinkPrice AI">
+
+  <meta property="og:title" content="Guest Post Price Calculator | LinkPrice AI">
+  <meta
+    property="og:description"
+    content="Estimate the fair market value of guest posts and backlinks with LinkPrice AI."
+  >
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav">
+
+      <a href="index.html" class="logo">
+        LinkPrice <span>AI</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#calculator">Calculator</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+
+    <div class="container hero-content">
+
+      <div class="hero-text">
+
+        <span class="badge">
+          Free SEO Pricing Tool
+        </span>
+
+        <h1>
+          Calculate Your Guest Post Price in Seconds
+        </h1>
+
+        <p>
+          Estimate the fair market value of guest posts and backlinks
+          based on website authority, organic traffic, niche and link type.
+        </p>
+
+        <a href="#calculator" class="primary-btn">
+          Calculate Price
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Calculator Section -->
+  <section id="calculator" class="calculator-section">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          LINKPRICE AI CALCULATOR
+        </span>
+
+        <h2>
+          Guest Post Price Calculator
+        </h2>
+
+        <p>
+          Enter your website details to get an estimated guest post price.
+        </p>
+
+      </div>
+
+
+      <div class="calculator-card">
+
+        <div class="form-grid">
+
+
+          <!-- Country -->
+          <div class="form-group">
+
+            <label for="country">
+              Country
+            </label>
+
+            <select id="country">
+
+              <option value="usa">
+                United States
+              </option>
+
+              <option value="uk">
+                United Kingdom
+              </option>
+
+              <option value="australia">
+                Australia
+              </option>
+
+              <option value="canada">
+                Canada
+              </option>
+
+              <option value="pakistan">
+                Pakistan
+              </option>
+
+              <option value="other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Niche -->
+          <div class="form-group">
+
+            <label for="niche">
+              Website Niche
+            </label>
+
+            <select id="niche">
+
+              <option value="general">
+                General
+              </option>
+
+              <option value="technology">
+                Technology
+              </option>
+
+              <option value="saas">
+                SaaS
+              </option>
+
+              <option value="business">
+                Business
+              </option>
+
+              <option value="finance">
+                Finance
+              </option>
+
+              <option value="health">
+                Health
+              </option>
+
+              <option value="home">
+                Home Improvement
+              </option>
+
+              <option value="roofing">
+                Roofing
+              </option>
+
+              <option value="fashion">
+                Fashion
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Domain Rating -->
+          <div class="form-group">
+
+            <label for="dr">
+              Domain Rating (DR)
+            </label>
+
+            <input
+              type="number"
+              id="dr"
+              min="0"
+              max="100"
+              placeholder="Example: 40"
+            >
+
+          </div>
+
+
+          <!-- Organic Traffic -->
+          <div class="form-group">
+
+            <label for="traffic">
+              Monthly Organic Traffic
+            </label>
+
+            <input
+              type="number"
+              id="traffic"
+              min="0"
+              placeholder="Example: 10000"
+            >
+
+          </div>
+
+
+          <!-- Link Type -->
+          <div class="form-group">
+
+            <label for="linkType">
+              Link Type
+            </label>
+
+            <select id="linkType">
+
+              <option value="guest">
+                Guest Post
+              </option>
+
+              <option value="insertion">
+                Link Insertion
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Content -->
+          <div class="form-group">
+
+            <label for="content">
+              Content Included?
+            </label>
+
+            <select id="content">
+
+              <option value="yes">
+                Yes - Publisher Provides Content
+              </option>
+
+              <option value="no">
+                No - Client Provides Content
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- Calculate Button -->
+        <button
+          type="button"
+          class="calculate-btn"
+          onclick="calculatePrice()"
+        >
+          Calculate Guest Post Price
+        </button>
+
+
+        <!-- Result -->
+        <div id="result" class="result-box hidden">
+
+          <h3>
+            Your Estimated Price
+          </h3>
+
+          <div class="price-grid">
+
+            <div class="price-card">
+              <span>Budget</span>
+              <strong id="budgetPrice">$0</strong>
+            </div>
+
+            <div class="price-card featured">
+              <span>Market Price</span>
+              <strong id="marketPrice">$0</strong>
+            </div>
+
+            <div class="price-card">
+              <span>Premium</span>
+              <strong id="premiumPrice">$0</strong>
+            </div>
+
+          </div>
+
+
+          <div class="recommendation">
+
+            <strong>
+              Recommended Price
+            </strong>
+
+            <p id="recommendationText">
+              Your recommended price will appear here.
+            </p>
+
+          </div>
+
+
+          <button
+            class="copy-btn"
+            onclick="copyResult()"
+          >
+            Copy Result
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="info-section">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          SIMPLE PROCESS
+        </span>
+
+        <h2>
+          How Does It Work?
+        </h2>
+
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step-card">
+
+          <div class="step-number">
+            01
+          </div>
+
+          <h3>
+            Enter Website Details
+          </h3>
+
+          <p>
+            Add the website's DR, monthly organic traffic,
+            niche and country.
+          </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+          <div class="step-number">
+            02
+          </div>
+
+          <h3>
+            Calculate
+          </h3>
+
+          <p>
+            Our pricing formula analyzes the information
+            you provide.
+          </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+          <div class="step-number">
+            03
+          </div>
+
+          <h3>
+            Get Your Estimate
+          </h3>
+
+          <p>
+            Receive budget, market and premium pricing estimates.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          FAQ
+        </span>
+
+        <h2>
+          Frequently Asked Questions
+        </h2>
+
+      </div>
+
+
+      <div class="faq-list">
+
+        <details>
+
+          <summary>
+            How much should a guest post cost?
+          </summary>
+
+          <p>
+            Guest post prices vary depending on website authority,
+            organic traffic, niche, country and link placement.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            Does Domain Rating affect guest post pricing?
+          </summary>
+
+          <p>
+            Yes. Higher authority websites can generally charge
+            more for guest posts and backlinks.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            Is organic traffic important for backlink pricing?
+          </summary>
+
+          <p>
+            Yes. Genuine organic traffic is an important factor
+            when evaluating the value of a website.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            Is LinkPrice AI free?
+          </summary>
+
+          <p>
+            Yes. LinkPrice AI is designed as a free SEO pricing
+            calculator for publishers, agencies and SEO professionals.
+          </p>
+
+        </details>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+
+    <div class="container">
+
+      <div class="footer-logo">
+        LinkPrice <span>AI</span>
+      </div>
+
+      <p>
+        Guest Post & Backlink Pricing Tools for SEO Professionals.
+      </p>
+
+      <p class="copyright">
+        © 2026 LinkPrice AI. All rights reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
